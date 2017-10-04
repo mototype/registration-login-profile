@@ -1,2 +1,2 @@
 # registration-login-profile
-custom Sweebo framework used
+Custom Sweebo MVC framework used (only module included)
