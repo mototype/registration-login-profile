@@ -1,0 +1,39 @@
+title: 'Регистрация'
+BLOCKS:
+ users: 'Форма за регистрация'
+BLOCK_ACTIONS:
+CONTROLLERS:
+ users: Потребители
+DB_FIELDS:
+ post_code: пощенски код
+MAIN_ACTIONS:
+ index: Потребители
+BREADCRUMBS_ACTIONS:
+ index: Настройки
+success: <h2>Регистрация - завършена! Моля потвърдете акаунта си на посочения от Вас мейл.</h2>
+success_update_pass: <h2>Вашата парола беше сменена успешно!</h2>
+success_mail_forgotten_pass: <h2>Получихте инструкции за забравена парола на посочения от Вас мейл</h2>
+errors: <h2>Несъществуващ потребител!</h2>
+PUBLIC:
+ confirm_password: Повтори парола
+ email: Емайл адрес
+ subject: Относно
+ send: Изпрати
+ registration: Регистрация
+ username: Потребителско име
+ first_name: Име
+ last_name: Фамилия
+ password: Парола
+ post_code: Пощенски код
+ address: Адрес
+ login: Вписване
+ enter: Вход
+ edit: Редакция данни
+ edit_form: Редактирай
+ update_password: Смяна на парола
+ old_password: Текуща парола
+ new_password: Нова парола
+ invalid_verification: Неактивиран акаунт. Моля, активирайте акаунта си!
+ registration_mail: Моля, въведете мейла, с който сте се регистрирали.
+ facebook: Facebook Login
+ image: Профилна снимка

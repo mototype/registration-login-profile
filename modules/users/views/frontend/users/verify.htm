@@ -1,0 +1,27 @@
+<header class="jumbotron">
+    <div class="container">
+        {if $result !== false}
+            <h1>Здравейте, {$result->username}!</h1>
+        {/if}
+    </div>
+</header>
+<div class="container">
+    <!-- Portfolio Item Row -->
+    <div class="row">
+
+{if isset($success)}
+    {$success}
+{else}
+    {$invalid}
+{/if}
+        <div class="col-md-12">
+            <div class="col-md-4 pull-left no-padding">
+
+                <p><small><a href="{url_for route_name=users_login}">Вписване</a></small></p>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>

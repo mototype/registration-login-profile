@@ -1,0 +1,35 @@
+<header class="jumbotron">
+    <div class="container">
+        <h1>Welcome {$obj->first_name}!</h1>
+    </div>
+</header>
+
+<div class="container">
+    <!-- Portfolio Item Row -->
+    <div class="row">
+
+        <div class="col-md-12">
+            <div class="col-md-4 pull-left no-padding">
+                {if $obj->main_image}
+                    <img class="img-responsive" src="{$obj->main_image->get_file()}" alt="">
+                {else}
+                    <img class="img-responsive" src="http://placehold.it/250x340" alt="">
+                {/if}
+            </div>
+            <div class="col-md-8">
+                <h2 class="no-margin">Your user info:</h2>
+                <br>
+                <h3 class="no-margin"><label>{$_labels.users.PUBLIC.username}:</label> {$obj->username}</h3>
+                <h3 class="no-margin"><label>{$_labels.users.PUBLIC.first_name}:</label> {$obj->first_name}</h3>
+                <h3 class="no-margin"><label>{$_labels.users.PUBLIC.last_name}:</label> {$obj->last_name}</h3>
+                <h3 class="no-margin"><label>{$_labels.users.PUBLIC.email}:</label> {$obj->email}</h3>
+                <h3 class="no-margin"><label>{$_labels.users.PUBLIC.address}:</label> {$obj->address}</h3>
+                <h3 class="no-margin"><label>{$_labels.users.PUBLIC.post_code}:</label> {$obj->post_code}</h3>
+                <br>
+                <p><small><a href="{url_for route_name=users_logout}">Logout</a></small> | <small><a href="{url_for route_name=users_update}">Редакция</a></small> | <small><a href="{url_for route_name=users_password}">Смяна на парола</a></small></p>
+            </div>
+        </div>
+
+    </div>
+
+</div>

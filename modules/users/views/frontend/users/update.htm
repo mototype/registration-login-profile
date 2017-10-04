@@ -1,0 +1,135 @@
+<div class="container">
+    <div class="users-cont">
+        <div class="col-xs-12 col-md-6">
+            <div class="row">
+
+                <h2>{$_labels.users.PUBLIC.edit}</h2>
+
+            </div>
+            <div class="row">
+
+                <form id="edit_form" method="POST" enctype="multipart/form-data">
+                    <div class="col-xs-12 col-md-6 m-t-20">
+                        <div class="form-group">
+                            <label>{$_labels.users.PUBLIC.username}</label>
+                            <input type="text" id="username" name="username" class="form-control" value="{$obj->username}" placeholder="" data-validation="length" data-validation-length="min1" />
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-6 m-t-20">
+                        <div class="form-group">
+                            <label>{$_labels.users.PUBLIC.email}</label>
+                            <input type="text" id="email" name="email" class="form-control" value="{$obj->email}" placeholder="" data-validation="length" data-validation-length="min1" />
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-6">
+                        <div class="form-group">
+                            <label>{$_labels.users.PUBLIC.first_name}</label>
+                            <input type="text" id="first_name" name="first_name" class="form-control" value="{$obj->first_name}" placeholder="" data-validation="length" data-validation-length="min1" />
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-6">
+                        <div class="form-group">
+                            <label>{$_labels.users.PUBLIC.last_name}</label>
+                            <input type="text" id="last_name" name="last_name" class="form-control" value="{$obj->last_name}" placeholder="" data-validation="length" data-validation-length="min1" />
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-6">
+                        <div class="form-group">
+                            <label for="address">{$_labels.users.PUBLIC.address}</label>
+                            <input type="text" id="address" name="address" class="form-control" value="{$obj->address}" placeholder="" data-validation="length" data-validation-length="min1" />
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-6">
+                        <div class="form-group">
+                            <label>{$_labels.users.PUBLIC.post_code}</label>
+                            <input type="text" id="post_code" name="post_code" class="form-control" value="{$obj->post_code}" placeholder=""  />
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-12">
+                        <div class="form-group">
+                            <label>{$_labels.users.PUBLIC.image}</label>
+                            <input type="file" id="main_image" name="main_image" class="form-control" />
+                            <p class="help-block">
+                                {if $obj->main_image}
+                                    <img class="img-responsive" src="{$obj->main_image->get_file()}" alt="">
+                                {/if}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-xs-12">
+                        <button class="btn btn-default" type="submit">{$_labels.users.PUBLIC.edit_form}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+{registerjs}
+<script src="{$_public}js/form-validator/jquery.form-validator.min.js"></script>
+<script>
+    var users_xhr = '{url_for controller=users module=users action=xhr}';
+
+    $(document).on('ready', function(){
+        $.validate();
+
+    $(document).on('submit', '#edit_form', function(e){
+        e.preventDefault();
+        var formData = new FormData(this);
+        $('#edit_form .help-block.form-error').remove();
+        $.ajax({
+            url: users_xhr+'?method=update',
+            type: 'POST',
+//            data: $('#edit_form').serialize(),
+            data:formData,
+            cache:false,
+            contentType: false,
+            processData: false,
+            success:function(data)
+            {
+//                console.log(data);
+                if(data.errors)
+                {
+                    $('#edit_form').append('<span class="help-block form-error">'+data.errors.join('<br />')+'</span>');
+                }else{
+                    window.location.href = data.success;
+                }
+            },
+            dataType:'JSON'
+        });
+
+    });
+    });
+</script>
+    {*<script>*}
+        {*$(document).ready(function (e) {*}
+            {*$('#edit_form').on('submit', '#edit_form', (function(e) {*}
+                {*e.preventDefault();*}
+                {*var formData = new FormData(this);*}
+
+                {*$.ajax({*}
+                    {*type:'POST',*}
+                    {*url: $(this).attr('action'),*}
+                    {*data:formData,*}
+                    {*cache:false,*}
+                    {*contentType: false,*}
+                    {*processData: false,*}
+                    {*success:function(data){*}
+                        {*console.log("success");*}
+                        {*console.log(data);*}
+                    {*},*}
+                    {*error: function(data){*}
+                        {*console.log("error");*}
+                        {*console.log(data);*}
+                    {*}*}
+                {*});*}
+            {*}));*}
+
+            {*$("#image").on("change", function() {*}
+                {*$("#edit_form").submit();*}
+            {*});*}
+        {*});*}
+    {*</script>*}
+
+{/registerjs}

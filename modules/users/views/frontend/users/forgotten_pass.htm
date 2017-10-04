@@ -1,0 +1,70 @@
+<div class="container">
+    <div class="users-cont">
+        <div class="col-xs-12 col-md-6">
+            <div class="row">
+
+                <h2>{$_labels.users.PUBLIC.update_password}</h2>
+
+            </div>
+            <div class="row">
+
+                {if isset($invalid_time)}
+                    {$invalid_time}
+                {/if}
+
+                <form id="forgotten_password_form" method="POST">
+                    <div class="col-xs-12 col-md-6">
+                        <div class="form-group">
+                            <label>{$_labels.users.PUBLIC.new_password}</label>
+                            <input type="password" id="password" name="password" class="form-control" value="" placeholder="" data-validation="length" data-validation-length="min8" />
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-6">
+                        <div class="form-group">
+                            <label>{$_labels.users.PUBLIC.confirm_password}</label>
+                            <input type="password" id="confirm_password" name="confirm_password" class="form-control" value="" placeholder="" data-validation="length" data-validation-length="min8" />
+                        </div>
+                    </div>
+                    <div class="col-xs-12">
+                        <button class="btn btn-default" type="submit">{$_labels.users.PUBLIC.send}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+{registerjs}
+    <script src="{$_public}js/form-validator/jquery.form-validator.min.js"></script>
+    <script>
+        var users_xhr = '{url_for controller=users module=users action=xhr}';
+
+        $(document).on('ready', function(){
+            $.validate();
+
+
+            $(document).on('submit', '#forgotten_password_form', function(e){
+                e.preventDefault();
+                $('#forgotten_password_form .help-block.form-error').remove();
+                $.ajax({
+                    url: users_xhr+'?hash_random={$smarty.get.hash_random}&method=forgotten_pass',
+                    type: 'POST',
+                    data: $('#forgotten_password_form').serialize(),
+                    success:function(data)
+                    {
+                        if(data.errors)
+                        {
+                            $('#forgotten_password_form').append('<span class="help-block form-error">'+data.errors.join('<br />')+'</span>');
+                        }else{
+                            $('#forgotten_password_form').html(data.success);
+                        }
+                    },
+                    dataType:'JSON'
+                });
+
+            });
+        });
+    </script>
+
+{/registerjs}

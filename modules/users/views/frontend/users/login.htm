@@ -1,0 +1,127 @@
+<div class="container">
+    <div class="login-cont">
+        <div class="col-xs-12 col-md-6">
+            <div class="row">
+
+                <h2>{$_labels.users.PUBLIC.login}</h2>
+
+            </div>
+            <div class="row">
+
+                <form id="login_form" method="POST">
+                    <div class="col-xs-12 col-md-6 m-t-20">
+                        <div class="form-group">
+                            <label>{$_labels.users.PUBLIC.username}</label>
+                            <input type="text" id="username" name="username" class="form-control" value="" placeholder="" data-validation="length" data-validation-length="min1" />
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-6">
+                        <div class="form-group">
+                            <label>{$_labels.users.PUBLIC.password}</label>
+                            <input type="password" id="password" name="password" class="form-control" value="" placeholder="" data-validation="length" data-validation-length="min8" />
+                        </div>
+                    </div>
+                    <div class="col-xs-12">
+                        <button class="btn btn-default" type="submit">{$_labels.users.PUBLIC.enter}</button>
+                        <a href="javascript:void(0)" class="btn btn-primary" id="facebook" >{$_labels.users.PUBLIC.facebook}</a>
+                    </div>
+                    <p>Не сте регистриран потребител?<a href="{url_for route_name=users_index}"> Натиснете тук. </a></p>
+                    <p><small><a href="{url_for route_name=users_send_email_forgotten_pass}">Забравена парола</a></small></p>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+{registerjs}
+<script src="{$_public}js/form-validator/jquery.form-validator.min.js"></script>
+    <script>
+        window.fbAsyncInit = function() {
+            FB.init({
+                appId      : '1511749742217351',
+                cookie     : true,
+                xfbml      : true,
+                version    : 'v2.8'
+            });
+            FB.AppEvents.logPageView();
+        };
+
+        (function(d, s, id){
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) { return;}
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+
+    </script>
+<script>
+
+    var users_xhr = '{url_for controller=users module=users action=xhr}';
+
+    function fblogin(response) {
+        $.ajax({
+            url: users_xhr+'?method=facebook_login',
+            type: 'POST',
+            data: response,
+            success:function(response)
+            {
+                if(response.errors)
+                {
+                    $('#facebook').append('<span class="help-block form-error">'+response.errors.join('<br />')+'</span>');
+                }else{
+                    window.location.href = '{url_for controller=users module=users action=home}';
+                }
+            },
+            dataType:'JSON'
+        });
+    }
+
+    $(document).on('ready', function(){
+        $.validate();
+
+        $(document).on('click', '#facebook', function(e) {
+            FB.getLoginStatus(function(response) {
+                if (response.status === 'connected') {
+                    fblogin(response.authResponse)
+                }
+                else {
+                    FB.login(function(response) {
+                        if (response.authResponse) {
+                            fblogin(response.authResponse)
+                        } else {
+//                        $('#facebook').append('<span class="help-block form-error">'+response.errors.join('<br />')+'</span>');
+                            console.log('User cancelled login or did not fully authorize.');
+                        }
+                    }, { scope: 'email'});
+                }
+
+            });
+
+        } )
+
+    $(document).on('submit', '#login_form', function(e){
+        e.preventDefault();
+        $('#login_form .help-block.form-error').remove();
+        $.ajax({
+            url: users_xhr+'?method=login',
+            type: 'POST',
+            data: $('#login_form').serialize(),
+            success:function(data)
+            {
+                if(data.errors)
+                {
+                    $('#login_form').append('<span class="help-block form-error">'+data.errors+'</span>');
+                }else{
+                    window.location.href = '{url_for controller=users module=users action=home}';
+                }
+            },
+            dataType:'JSON'
+        });
+
+    });
+    });
+</script>
+
+{/registerjs}

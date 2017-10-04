@@ -1,0 +1,16 @@
+{tinymce controller=$controller}
+<div class="jumbotron" data-pages="parallax">
+    <div class="container-fluid container-fixed-lg sm-p-l-20 sm-p-r-20">
+        <h2>{$_labels.$module.title} - {$_labels.MAIN_ACTIONS.$_action}</h2>
+    </div>
+</div>
+<div class="container-fluid container-fixed-lg sm-p-l-20 sm-p-r-20 p-l-15">
+    <form enctype="multipart/form-data" action="" method="post" target="save_form">
+
+            <div class="col-xlg-8 col-lg-8 col-md-12 no-padding">{$fields.left}</div>
+            <div class="col-xlg-4 col-lg-4 col-md-12 no-padding">{$fields.right}</div>
+
+        </div>
+    </form>
+</div>
+<iframe name="save_form" id="save_form" style="width:0;height:0;border:0px solid #fff;"></iframe>

@@ -1,0 +1,60 @@
+<div class="container">
+    <div class="users-cont">
+        <div class="col-xs-12 col-md-6">
+            <div class="row">
+
+                <h2>{$_labels.users.PUBLIC.registration_mail}</h2>
+
+            </div>
+            <div class="row">
+
+                <form id="email_password_form" method="POST">
+                    <div class="col-xs-12 col-md-6 m-t-20">
+                        <div class="form-group">
+                            <label>{$_labels.users.PUBLIC.email}</label>
+                            <input type="text" id="email" name="email" class="form-control" value="" placeholder="" data-validation="length" data-validation-length="min1" />
+                        </div>
+                    </div>
+                    <div class="col-xs-12">
+                        <button class="btn btn-default" type="submit">{$_labels.users.PUBLIC.send}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+{registerjs}
+    <script src="{$_public}js/form-validator/jquery.form-validator.min.js"></script>
+    <script>
+        var users_xhr = '{url_for controller=users module=users action=xhr}';
+
+        $(document).on('ready', function(){
+            $.validate();
+
+
+            $(document).on('submit', '#email_password_form', function(e){
+                e.preventDefault();
+                $('#email_password_form .help-block.form-error').remove();
+                $.ajax({
+                    url: users_xhr+'?method=send_email_forgotten_pass',
+                    type: 'POST',
+                    data: $('#email_password_form').serialize(),
+                    success:function(data)
+                    {
+                        if(data.errors)
+                        {
+                            $('#email_password_form').append('<span class="help-block form-error">'+data.errors.join('<br />')+'</span>');
+                        }else{
+                            $('#email_password_form').html(data.success);
+                        }
+                    },
+                    dataType:'JSON'
+                });
+
+            });
+        });
+    </script>
+
+{/registerjs}
